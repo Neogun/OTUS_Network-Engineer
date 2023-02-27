@@ -31,9 +31,13 @@
 
 ### Задачи
 Часть 1. Построить сеть и произвести базовые настройки оборудования.  
+
 Часть 2. Созать VLANы и назначить порты.  
+
 Часть 3. Настроить транки 802.1Q между коммутаторами.  
-Часть 4. Настроить межвлановую маршрутизацию на роутере.  
+
+Часть 4. Настроить межвлановую маршрутизацию на роутере. 
+
 Часть 5. Проверить работы межвлановой маршрутизации.  
 
 
@@ -41,7 +45,7 @@
 
 *Шаг 1. Соберите сеть согласно топологии.*
 
-![Image]()
+![Image](https://github.com/Neogun/OTUS_Network-Engineer/blob/main/LAB_01/Images/eveNG-topology.jpg)
 
 *Шаг 2. Настройте маршрутизатор *
 
@@ -87,7 +91,7 @@ R1(config-if)#no shu
 
 R1(config-if)# do wr
 
-* Шаг 3. Настройте каждый коммутатор коммутатор. *
+*Шаг 3. Настройте каждый коммутатор коммутатор. *
 
 Switch>en
 
@@ -162,7 +166,7 @@ S2(config) service password-encryption
 
 S2(config-line)#do wr
 
-* Шаг 4. Настройте адресацию на PC-A и PC-B *
+*Шаг 4. Настройте адресацию на PC-A и PC-B *
 
 ![Image](https://github.com/Neogun/OTUS_Network-Engineer/blob/main/LAB_01/Images/PC-A%20IP-address.jpg)
 
@@ -171,7 +175,7 @@ S2(config-line)#do wr
 
 ### Часть 2. Созать VLANы и назначить порты.
 
-* Шаг 1. Создайте требуемые VLAN на обоих коммутаторах из таблицы выше *
+*Шаг 1. Создайте требуемые VLAN на обоих коммутаторах из таблицы выше *
 
 
 S1(config)#vlan 3
@@ -207,7 +211,7 @@ S2(config-vlan)#vlan 8
 
 S2(config-vlan)#name Native
 
-* Шаг 2. Создайте интерфейс управления и назначьте маршрут по умолчанию для каждого коммутатора из таблицы адресации *
+*Шаг 2. Создайте интерфейс управления и назначьте маршрут по умолчанию для каждого коммутатора из таблицы адресации *
 
 S1(config) ip default-gateway 192.168.3.1
 
@@ -226,7 +230,7 @@ S2(config-if)#no shu
 
 S2(config-if)#ip address 192.168.3.12 255.255.255.0
 
-* Шаг 3. Назначьте все неиспользуемые порты на обоих коммутаторах в VLAN ParkingLot и административно выключите их переведите в режим доступа *
+*Шаг 3. Назначьте все неиспользуемые порты на обоих коммутаторах в VLAN ParkingLot и административно выключите их переведите в режим доступа *
 
 S1(config)#int eth0/3
 
@@ -247,7 +251,7 @@ S2(config-if)#switchport access vlan 7
 S2(config-if)#shu
 
 
-* Шаг 4. Назначьте все используемые порты доступа на обоих коммутаторах в соответствующий VLAN , согласно таблицы VLAN и переведите их в режим доступа*
+*Шаг 4. Назначьте все используемые порты доступа на обоих коммутаторах в соответствующий VLAN , согласно таблицы VLAN и переведите их в режим доступа*
 
 S1(config)#int eth0/2
 
@@ -263,7 +267,7 @@ S2(config-if)#switchport mode access
 S2(config-if)#switchport access vlan 4
 
 
-* Шаг 5. Убедитесь, что vlan назначены корректно*
+*Шаг 5. Убедитесь, что vlan назначены корректно*
 
 ![Image](https://github.com/Neogun/OTUS_Network-Engineer/blob/main/LAB_01/Images/show%20vlan%20brief%20S1.jpg)
 
@@ -271,7 +275,7 @@ S2(config-if)#switchport access vlan 4
 
 ### Часть 3. Конфигурация Транка 802.1Q между коммутаторами.
 
-* Шаг 1. Переведите интерфейс eth0/1 в режим транка на обоих коммутаторах*
+*Шаг 1. Переведите интерфейс eth0/1 в режим транка на обоих коммутаторах*
 
 S1(config)#int eth0/1
 
@@ -288,25 +292,25 @@ S2(config-if)#switchport trunk encapsulation dot1Q
 S2(config-if)#switchport mode trunk
 
 
-* Шаг 2. Сделайте VLAN 8 нативным на обоих коммутаторах*
+*Шаг 2. Сделайте VLAN 8 нативным на обоих коммутаторах*
 
 S1(config-if)#switchport trunk native vlan 8
 
 S2(config-if)#switchport trunk native vlan 8
 
-* Шаг 3. Настройте передачу трафика VLANов 3,4,8 для передачи через транковый порт*
+*Шаг 3. Настройте передачу трафика VLANов 3,4,8 для передачи через транковый порт*
 
 S1(config-if)#switchport trunk allowed vlan 3,4,8
 
 S2(config-if)#switchport trunk allowed vlan 3,4,8
 
-* Шаг 4. Проверьте настройку транковых портов и разрешенных для передачи через транк VLANов*
+*Шаг 4. Проверьте настройку транковых портов и разрешенных для передачи через транк VLANов*
 
 ![Image](https://github.com/Neogun/OTUS_Network-Engineer/blob/main/LAB_01/Images/show%20int%20trunk%20S1.jpg)
 
 ![Image](https://github.com/Neogun/OTUS_Network-Engineer/blob/main/LAB_01/Images/show%20int%20trunk%20S2.jpg)
 
-* Шаг 5. Настройте интерфейс коммутатора S1 eth0/0 в режим транка*
+*Шаг 5. Настройте интерфейс коммутатора S1 eth0/0 в режим транка*
 
 S1(config)#int eth0/1
 
@@ -320,20 +324,20 @@ S1(config-if)#switchport trunk allowed vlan 3,4,8
 
 S1(config-if)#do wr
 
-* Шаг 6. Проверьте настройку транковых портов и разрешенных для передачи через транк VLANов на коммутаторе S1 еще раз*
+ *Шаг 6. Проверьте настройку транковых портов и разрешенных для передачи через транк VLANов на коммутаторе S1 еще раз*
 
 ![Image](https://github.com/Neogun/OTUS_Network-Engineer/blob/main/LAB_01/Images/show%20int%20trunk%20S1.jpg)
 
 
 ### Часть 4. Настроить межвлановую маршрутизацию на маршрутизаторе.   
 
-* Шаг 1. Включите интерфейс eth0/0 на маршрутизаторе*
+*Шаг 1. Включите интерфейс eth0/0 на маршрутизаторе*
 
 R1(config)#int eth0/0
 
 R1(config-if)#no shu
 
-* Шаг 2. Настройте саб-интерфейсы для  VLAN 3 и 4, с IP-адресами указанными в таблице. Все саб-интерфейсы должны использовать инкапсуляцию 802.1Q. Настройте описание для каждого саб-интерфейса. Саб-интерфейс для нативного VLAN не имеет IP-адреса*
+*Шаг 2. Настройте саб-интерфейсы для  VLAN 3 и 4, с IP-адресами указанными в таблице. Все саб-интерфейсы должны использовать инкапсуляцию 802.1Q. Настройте описание для каждого саб-интерфейса. Саб-интерфейс для нативного VLAN не имеет IP-адреса*
 
 R1(config)#int eth0/0.3
 
@@ -353,19 +357,19 @@ R1(config-if)#description Operations
 
 ### Часть 5. Проверить работы межвлановой маршрутизации. 
 
-* Шаг 1. Ввыполните команду ping с PC-A до шлюза по умолчанию*
+*Шаг 1. Ввыполните команду ping с PC-A до шлюза по умолчанию*
 
 ![Image](https://github.com/Neogun/OTUS_Network-Engineer/blob/main/LAB_01/Images/PC-A%20ping%20default%20gateway.jpg)
 
-* Шаг 2. Ввыполните команду ping с PC-A до PC-B*
+*Шаг 2. Ввыполните команду ping с PC-A до PC-B*
 
 ![Image](https://github.com/Neogun/OTUS_Network-Engineer/blob/main/LAB_01/Images/PC-A%20ping%20PC-B.jpg)
 
-* Шаг 3. Ввыполните команду ping с PC-A до S2*
+*Шаг 3. Ввыполните команду ping с PC-A до S2*
 
 ![Image](https://github.com/Neogun/OTUS_Network-Engineer/blob/main/LAB_01/Images/PC-A%20ping%20S2.jpg)
 
-* Шаг 4. Выполните команду tracert с PC-B до PC-A*
+*Шаг 4. Выполните команду tracert с PC-B до PC-A*
 
 ![Image](https://github.com/Neogun/OTUS_Network-Engineer/blob/main/LAB_01/Images/PC-B%20tracert%20to%20PC-A.jpg)
 
