@@ -1,4 +1,4 @@
-# Лабораторная работа - Расчет подсетей IPv4 
+# Лабораторная работа -  
 
 **Выполнил Давыдкин Д.Г.**
 
@@ -41,55 +41,12 @@
 Часть 5. Проверить работы межвлановой маршрутизации.  
 
 
-### Часть 1. Настройка топологии и конфигурация основных параметров маршрутизатора и коммутатора
+### Часть 1:	Создание сети и настройка основных параметров устройства
 
-*Шаг 1. Соберите сеть согласно топологии.*
+*Шаг 1.Создайте сеть согласно топологии. Шаг 2:	Выполните инициализацию и перезагрузку коммутаторов. *
 
-![Image](https://github.com/Neogun/OTUS_Network-Engineer/blob/main/LAB_01/Images/eveNG-topology.jpg)
+![Image]()
 
-*Шаг 2. Настройте маршрутизатор *
-
-Router>
-
-Router>en
-
-Router#clock set 22:00:00 feb 01 2023
-
-Router#conf t
-
-Router(config)#hostname R1
-
-R1(config)#banner motd #Entry closed!!!#
-
-R1(config)#no ip domain-lookup
-
-R1(config)#enable secret class
-
-R1(config)#line con 0
-
-R1(config-line)#logging synchronous
-
-R1(config-line)#password cisco
-
-R1(config-line)#login
-
-R1(config-line)#line vty 0 15
-
-R1(config-line)#logging synchronous
-
-R1(config-line)#password cisco
-
-R1(config-line)#login
-
-R1(config-line)#exit
-
-R1(config) service password-encryption
-
-R1(config)#int eth 0/0
-
-R1(config-if)#no shu
-
-R1(config-if)# do wr
 
 *Шаг 3. Настройте каждый коммутатор коммутатор. *
 
@@ -105,6 +62,8 @@ S1(config)#no ip domain-lookup
 
 S1(config)#enable secret class
 
+S1(config) service password-encryption
+
 S1(config)#banner motd #Entry closed!!!#
 
 S1(config)#line con 0
@@ -117,17 +76,19 @@ S1(config-line)#login
 
 S1(config-line)#line vty 0 4
 
-S1(config-line)#logging synchronous
+S1config-line)#logging synchronous
 
 S1(config-line)#password cisco
 
 S1(config-line)#login
 
-S2(config-line)#exit
+S1(config-line)#int vlan 1
 
-S2(config) service password-encryption
+S1(config-if)#ip address 192.168.1.2 255.255.255.0
 
-S1(config-line)#do wr
+S1(config-if)#no shu
+
+S1(config-if)#do wr
 
 
 Switch>en
@@ -141,6 +102,8 @@ Switch(config)#hostname S2
 S2(config)#no ip domain-lookup
 
 S2(config)#enable secret class
+
+S2(config) service password-encryption
 
 S2(config)#banner motd #Entry closed!!!#
 
@@ -160,11 +123,57 @@ S2(config-line)#password cisco
 
 S2(config-line)#login
 
-S2(config-line)#exit
+S2(config-line)#int vlan 1
 
-S2(config) service password-encryption
+S2(config-if)#ip address 192.168.1.2 255.255.255.0
 
-S2(config-line)#do wr
+S2(config-if)#no shu
+
+S2(config-if)#do wr
+
+
+
+Switch>en
+
+Switch#clock set 22:00:00 feb 01 2023
+
+Switch#conf t
+
+Switch(config)#hostname S3
+
+S3(config)#no ip domain-lookup
+
+S3(config)#enable secret class
+
+S3(config) service password-encryption
+
+S3(config)#banner motd #Entry closed!!!#
+
+S3(config)#line con 0
+
+S3(config-line)#logging synchronous
+
+S3(config-line)#password cisco
+
+S3(config-line)#login
+
+S3(config-line)#line vty 0 4
+
+S3(config-line)#logging synchronous
+
+S3(config-line)#password cisco
+
+S3(config-line)#login
+
+S3(config-line)#int vlan 1
+
+S3(config-if)#ip address 192.168.1.2 255.255.255.0
+
+S3(config-if)#no shu
+
+S3(config-if)#do wr
+
+
 
 *Шаг 4. Настройте адресацию на PC-A и PC-B *
 
