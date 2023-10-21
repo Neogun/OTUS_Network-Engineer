@@ -187,16 +187,96 @@ S1(config-line)#password cisco
 
 S1(config-line)#login
 
-Настройка адресов на маршрутизаторе на прмимере маршрутизатора R12
+Настройка адресов на маршрутизаторе на примере маршрутизатора R12
 ![Image]()
 
 Настройка IP-адреса на компьютере и проверка работоспособности командой PING
 ![Image]()
 
-#Настроите сети офисов так, чтобы не возникало broadcast штормов, а использование линков было максимально оптимизировано 
+**Настроите сети офисов так, чтобы не возникало broadcast штормов, а использование линков было максимально оптимизировано** 
 Основная причина возникновения brodcast шторм это избыточность линков между коммутаторами на втором уровене.
 Для решения данной проблемы был настроен STP на всех коммутаторах второго уровня, а также в случае наличия двух линков между одной парой коммутаторов, была использования технология агрегации каналов LACP.
 
-Настройка STP:
+Настройка STP, (на портах у коммутаторов к которым подключаются конечные устройства были выполнены настройки BPDUGuard и Portfast):
+SW3(config)#spanning-tree mode mst
+SW(config)#int e0/2
+SW(config)#spanning-tree bpduguard enable
+SW(config)#spanning-tree portfast
+
+![Image]()
+
+Настройка STP на остальных коммутаторах аналогична.
+
+Настойка LACP: 
+
+SW4(config)#int range e0/2-3
+
+SW4(config-if-range)#channel-protocol
+
+SW4(config-if-range)#channel-group 1 mode active 
+
+SW4(config-if-range)#exit
+
+SW4(config)#int port-channel 1
+
+SW4(config-if)#switchport trunk encapsulation dot1q
+
+SW4(config-if)#switchport mode trunk
+
+SW4(config-if)#do wr
 
 
+SW5(config)#int range e0/2-3
+
+SW5(config-if-range)#channel-protocol
+
+SW5(config-if-range)#channel-group 1 mode passive
+
+SW5(config-if-range)#exit
+
+SW5(config)#int port-channel 1
+
+SW5(config-if)#switchport trunk encapsulation dot1q
+
+SW5(config-if)#switchport mode trunk
+
+SW5(config-if)#do wr
+
+
+SW9(config)#int range e0/2-3
+
+SW9(config-if-range)#channel-protocol
+
+SW9(config-if-range)#channel-group 1 mode active 
+
+SW9(config-if-range)#exit
+
+SW9(config)#int port-channel 1
+
+SW9(config-if)#switchport trunk encapsulation dot1q
+
+SW9(config-if)#switchport mode trunk
+
+SW9(config-if)#do wr
+
+
+SW10(config)#int range e0/2-3
+
+SW10(config-if-range)#channel-protocol
+
+SW10(config-if-range)#channel-group 1 mode passive
+
+SW10(config-if-range)#exit
+
+SW10(config)#int port-channel 1
+
+SW10(config-if)#switchport trunk encapsulation dot1q
+
+SW10(config-if)#switchport mode trunk
+
+
+Также для маршрутизаторов в офисе Москва (R12 и R13) и офисе С-Петербург (R17 и R16) был настроен протокол HSRP.
+
+
+
+SW5(config-if)#do wr
